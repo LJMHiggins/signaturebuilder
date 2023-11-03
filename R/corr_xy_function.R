@@ -1,4 +1,4 @@
-## Corr two datasets function from protools github ###
+## Modified corr two datasets function from protools github ###
 
 #' Correlate two datasets
 #'
@@ -35,10 +35,8 @@ corr.two.data.sets.v2 <- function(
   library(data.table)
   library(doParallel)
 
-
   y_factors <- intersect(y_factors, colnames(y_dataset))
   x_factors <- intersect(x_factors, colnames(x_dataset))
-
 
   ncores <- parallel::detectCores()-1
   cl <- makeCluster(ncores)
