@@ -73,7 +73,9 @@ perturbation_summary_stats <- function(pert.datasets, prot.datasets){
       }
       f.name <- paste0(pert.df.name, "_", prot.df.name, "_summary_stats.csv")
       results_dir <- "computed_perturbagen_stats"
-      dir.create(results_dir)
+      if (!dir.exists(results_dir)){
+        dir.create(results_dir)
+      }
       write.csv(matched.yvar.stats,
                 file = paste0(results_dir, "/", f.name))
       print(paste("Completed stats for:", f.name))
