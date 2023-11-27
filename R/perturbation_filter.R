@@ -20,7 +20,7 @@ perturbation_summary_stats <- function(pert.datasets, prot.datasets){
     i <- i + 1
     j <- 1
 
-    perturbations <- colnames(per.df)[-c(1,2)]
+    perturbations <- colnames(per.df)[-1]
 
     for (prot.df in prot.datasets){
       prot.df.name <- names(prot.datasets)[j]
@@ -73,7 +73,7 @@ perturbation_summary_stats <- function(pert.datasets, prot.datasets){
       }
       f.name <- paste0(pert.df.name, "_", prot.df.name, "_summary_stats.csv")
       results_dir <- "computed_perturbagen_stats"
-      dir.create(new_folder_name)
+      dir.create(results_dir)
       write.csv(matched.yvar.stats,
                 file = paste0(results_dir, "/", f.name))
       print(paste("Completed stats for:", f.name))

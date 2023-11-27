@@ -2,4 +2,6 @@
 
 export(corr.two.data.sets.v2)
 export(make_coef_signatures)
+export(perturbation_filter)
+export(perturbation_summary_stats)
 export(signature_list_from_markers)

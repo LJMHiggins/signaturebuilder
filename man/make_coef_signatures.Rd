@@ -19,7 +19,7 @@ make_coef_signatures(
 data output.}
 
 \item{positive_coef}{String indicating whether positive coefficients are
-indicative of sensitivity or resistance.}
+indicative of sensitivity or resistance. Options are "resistance" or "sensitivity"}
 
 \item{list_of_filtered_perts}{List of vectors containing perturbagens which
 passed QC thresholds.}
