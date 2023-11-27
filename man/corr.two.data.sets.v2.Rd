@@ -12,13 +12,28 @@ corr.two.data.sets.v2(
   x_factors,
   y_factor_name = "y",
   x_factor_name = "x",
-  protein_scale = FALSE
+  threshold_test = "Corr"
 )
 }
 \arguments{
-\item{protein_scale}{Logical, whether to scale protein before fitting.}
+\item{x_dataset}{Intended to be independent x variable of linear function. Here,
+the proteomics datasets.}
+
+\item{y_dataset}{Intended to be the dependent y variable of linear function. Here,
+the perturbation datasets.}
+
+\item{common_column}{Cell line ids, for merging.}
+
+\item{y_factors}{Perturbations.}
+
+\item{x_factors}{Proteins}
+
+\item{threshold_test}{String. Determines initial test to determine the dependence
+between the two variables.}
+
+\item{protein_scale}{Logical. whether to scale protein before fitting.}
 }
 \description{
 Function taken from protools2 and slightly altered, main change is the calculation of
- R2 value
+ R2 value. Protein df scaling can be performed outside of funtion.
 }
