@@ -20,7 +20,7 @@ perturbation_summary_stats <- function(pert.datasets, prot.datasets){
     i <- i + 1
     j <- 1
 
-    perturbations <- colnames(per.df)[-c(1,2)]
+    perturbations <- colnames(per.df)[-1]
 
     for (prot.df in prot.datasets){
       prot.df.name <- names(prot.datasets)[j]
