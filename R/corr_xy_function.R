@@ -51,8 +51,7 @@ corr.two.data.sets.v2 <- function(
     dfpp <- foreach(prot = x_factors, .combine = 'rbind')%dopar%{
       tryCatch({
         dfx <- na.omit(xx[, c("per", prot)])
-        #pval <- 1
-        #rval <- 0
+        test_pval <- 1
         slope <- 0
         r_squared <- 0
         if (!is.null(dfx)){
@@ -66,7 +65,7 @@ corr.two.data.sets.v2 <- function(
               test_pval <- mi$p.value
               test_stat <- mi$estimate
             }
-            if (pval<0.05){
+            if (test_pval<0.05){
               rval <- tt$estimate
               ll <- lm(dfx[, 1] ~ dfx[, 2])
               slope <- ll$coefficients[2]
