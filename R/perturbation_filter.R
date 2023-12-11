@@ -122,11 +122,11 @@ perturbation_filter <- function(summary_stats_df,
   # Subset perturbation statistics dataframe
   long.df %>%
     group_by(dataset) %>%
-    filter(Mininum.val < 0.5 & Maximum.val >= 0.5) %>%
-    filter((Standard.dev > 0.15) | (IQR > 0.05 &
+    filter(Mininum.val < min_val_cut & Maximum.val >= max_val_cut) %>%
+    filter((Standard.dev > sd_cut) | (IQR > iqr_cut &
                                       (
                                         (
-                                          Skew >= 7 | Skew <= -7) & Kurtosis >= 2
+                                          abs(Skew) > -skew_cut) & Kurtosis >= kurt_cut
                                       ))) -> df.filtered
   # Generate list of perturbations which passed QC thresholds
   datasets <- unique(df.filtered$dataset)

@@ -21,7 +21,8 @@ make_coef_signatures <- function(data_files_dir,
                                  corr_data_files = NULL,
                                  positive_coef,
                                  list_of_filtered_perts = NULL,
-                                 scale =  FALSE){
+                                 scale =  FALSE,
+                                 compound_label = FALSE){
 
   .make.and.save.marker.df <- function(df, path, nname, q1, q2,
                                        positive_coef){
@@ -88,7 +89,10 @@ make_coef_signatures <- function(data_files_dir,
     nname <- f.names[j]
     df_corr <- read.csv(f)
     print(paste0("Reading: ", f))
-
+    if (compound_label == TRUE){
+      df_corr <- df_corr %>%
+        dplyr::rename(perturbagen = compound)
+    }
     if (!is.null(list_of_filtered_perts)){
       good_perts <- list_of_filtered_perts[[j]]
       print(paste0("Got gene list for", names(list_of_filtered_perts[j])))
