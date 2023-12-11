@@ -9,7 +9,8 @@ make_coef_signatures(
   corr_data_files = NULL,
   positive_coef,
   list_of_filtered_perts = NULL,
-  scale = FALSE
+  scale = FALSE,
+  compound_label = FALSE
 )
 }
 \arguments{
