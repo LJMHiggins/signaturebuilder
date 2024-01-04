@@ -17,6 +17,8 @@
 #' @param protein_scale Logical. whether to scale protein before fitting.
 #' @param threshold_test String. Determines initial test to determine the dependence
 #'  between the two variables.
+#' @param tumour_type_covar Logical. Whether to include tumour type (haem / solid)
+#'  as covariate in linear models.
 #'
 #' @return
 #' @export
@@ -30,7 +32,8 @@ corr.two.data.sets.v2 <- function(
     x_factors,
     y_factor_name = "y",
     x_factor_name = "x",
-    threshold_test = "Corr"){
+    threshold_test = "Corr",
+    tumour_type_covar = FALSE){
 
   library(data.table)
   library(doParallel)
@@ -50,7 +53,7 @@ corr.two.data.sets.v2 <- function(
     xx <- merge.data.frame(y, x_dataset, by = common_column)
     dfpp <- foreach(prot = x_factors, .combine = 'rbind')%dopar%{
       tryCatch({
-        dfx <- na.omit(xx[, c("per", prot)])
+        dfx <- na.omit(xx[, c("per", prot, common_column)])
         test_pval <- 1
         slope <- 0
         r_squared <- 0
@@ -67,11 +70,20 @@ corr.two.data.sets.v2 <- function(
             }
             if (test_pval<0.05){
               rval <- tt$estimate
-              ll <- lm(dfx[, 1] ~ dfx[, 2])
+              if (tumour_type_covar == TRUE){
+                dfx[, 3] <- as.integer(dfx[,3] %in% signaturebuilder::haem.cells)
+                ll <- lm(dfx[, 1] ~ dfx[, 2] + dfx[, 3])
+              } else {
+                ll <- lm(dfx[, 1] ~ dfx[, 2])
+              }
               slope <- ll$coefficients[2]
-              r_squared <- summary(ll)$r.squared
+              model_summary <- summary(ll)
+              r_squared <- model_summary$r.squared
+              se_regression_line <- summary_stats$coefficients[, "Std. Error"]
+              se_slope <- se_regression_line[[2]]
+              se_intercept <- se_regression_line[[1]]
 
-              return(c(per,prot, test_pval, test_stat, slope, r_squared, nrow(dfx)))
+              return(c(per, prot, test_pval, test_stat, slope, r_squared, se_slope, se_intercept, nrow(dfx)))
             }
           }
         }
@@ -92,10 +104,10 @@ corr.two.data.sets.v2 <- function(
     }
   }
   if (threshold_test == "Corr"){
-    colnames(df.results) <- c(y_factor_name, x_factor_name, "pval", "rval", "beta", "R_squared", "n_cells", "fdr")
+    colnames(df.results) <- c(y_factor_name, x_factor_name, "pval", "rval", "beta", "R_squared", "n_cells", "se_slope", "se_intercept", "fdr")
     df.results <- subset(df.results, df.results$rval!=0)
   } else if (threshold_test == "MI"){
-    colnames(df.results) <- c(y_factor_name, x_factor_name, "pval", "mi", "beta", "R_squared", "n_cells", "fdr")
+    colnames(df.results) <- c(y_factor_name, x_factor_name, "pval", "mi", "beta", "R_squared", "n_cells", "se_slope", "se_intercept", "fdr")
   }
   df.results <- df.results[order(df.results$fdr), ]
 

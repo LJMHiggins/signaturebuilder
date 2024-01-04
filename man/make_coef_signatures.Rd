@@ -10,7 +10,8 @@ make_coef_signatures(
   positive_coef,
   list_of_filtered_perts = NULL,
   scale = FALSE,
-  compound_label = FALSE
+  compound_label = FALSE,
+  independent_var = "protein"
 )
 }
 \arguments{

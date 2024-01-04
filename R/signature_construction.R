@@ -22,7 +22,8 @@ make_coef_signatures <- function(data_files_dir,
                                  positive_coef,
                                  list_of_filtered_perts = NULL,
                                  scale =  FALSE,
-                                 compound_label = FALSE){
+                                 compound_label = FALSE,
+                                 independent_var = "protein"){
 
   .make.and.save.marker.df <- function(df, path, nname, q1, q2,
                                        positive_coef){
@@ -42,11 +43,11 @@ make_coef_signatures <- function(data_files_dir,
       dfx <- df[df$perturbagen==per,]
 
       if (positive_coef == "sensitive"){
-        prots.sensitivity <- dfx[dfx$beta>q2, "protein"]
-        prots.resistance <- dfx[dfx$beta<(q1), "protein"]
+        prots.sensitivity <- dfx[dfx$beta>q2, independent_var]
+        prots.resistance <- dfx[dfx$beta<(q1), independent_var]
       } else if (positive_coef == "resistance"){
-        prots.sensitivity <- dfx[dfx$beta<(q1), "protein"]
-        prots.resistance <- dfx[dfx$beta>q2, "protein"]
+        prots.sensitivity <- dfx[dfx$beta<(q1), independent_var]
+        prots.resistance <- dfx[dfx$beta>q2, independent_var]
       }
       if (length(prots.resistance)>2 & length(prots.resistance)>2){
         #Build new row

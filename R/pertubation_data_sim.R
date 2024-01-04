@@ -12,13 +12,13 @@ simulate_distribution <- function(cp_params, sample_no = 500){
   if (length(cp_params) == 3){
     params <- sn::cp2dp(cp_params, family = "SN")
     boot.dists <- sapply(1:1000, function(i) {
-      sim <- rsn(sample_no, dp = params)
+      sim <- sn::rsn(sample_no, dp = params)
     }
     )
   } else if (length(cp_params) == 4){
     params <- sn::cp2dp(cp_params, family = "ST")
     boot.dists <- sapply(1:1000, function(i) {
-      sim <- rst(sample_no, dp = params)
+      sim <- sn::rst(sample_no, dp = params)
     }
     )
   }
@@ -50,7 +50,7 @@ simulate_density <- function(cp_params, sample_no = 500){
   .skew_norm <- function(params, sample_no){
 
     boot.dists <- sapply(1:1000, function(i) {
-      sim <- rsn(sample_no, dp = params)
+      sim <- sn::rsn(sample_no, dp = params)
     })
     boot.dens <- apply(boot.dists, 2, function(col){
       sim.dens <- sn::dsn(col, dp = params)
