@@ -12,7 +12,8 @@ corr.two.data.sets.v2(
   x_factors,
   y_factor_name = "y",
   x_factor_name = "x",
-  threshold_test = "Corr"
+  threshold_test = "Corr",
+  tumour_type_covar = FALSE
 )
 }
 \arguments{
@@ -30,6 +31,9 @@ the perturbation datasets.}
 
 \item{threshold_test}{String. Determines initial test to determine the dependence
 between the two variables.}
+
+\item{tumour_type_covar}{Logical. Whether to include tumour type (haem / solid)
+as covariate in linear models.}
 
 \item{protein_scale}{Logical. whether to scale protein before fitting.}
 }
